@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشركة الأمريكية لخدمات النظافة والبيئة</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #16a085;
+            --text-color: #ecf0f1;
+            --background: #1a1a1a;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary-color);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .company-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .system-title {
+            font-size: 1.1em;
+            color: var(--accent-color);
+            font-style: italic;
+        }
+
+        .language-switcher {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--secondary-color);
+            padding: 20px;
+            border-right: 1px solid #34495e;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            background: var(--primary-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .nav-item:hover {
+            background: var(--accent-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .login-section {
+            background: var(--secondary-color);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: var(--primary-color);
+            border: 1px solid #34495e;
+            border-radius: 5px;
+            color: var(--text-color);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .attendance-section {
+            background: var(--secondary-color);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary { background: var(--accent-color); color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-warning { background: #f39c12; color: black; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--secondary-color);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #34495e;
+        }
+
+        th {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة الدخول -->
+    <div id="loginSection" class="active">
+        <div class="header">
+            <div class="logo-section">
+                <div class="company-name">American Cleaning & Environment Services</div>
+                <div class="system-title">Smart Attendance System</div>
+            </div>
+        </div>
+        
+        <div class="login-section">
+            <h2>تسجيل الدخول</h2>
+            <input type="text" id="username" class="login-input" placeholder="اسم المستخدم" value="admin">
+            <input type="password" id="password" class="login-input" placeholder="كلمة المرور" value="admin123">
+            <button class="login-btn" onclick="login()">دخول النظام</button>
+            <p style="margin-top: 15px; color: #bdc3c7;">بيانات الدخول الافتراضية: admin / admin123</p>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div id="mainApp" class="section">
+        <div class="header">
+            <div class="logo-section">
+                <div class="company-name">الشركة الأمريكية لخدمات النظافة والبيئة</div>
+                <div class="system-title">نظام الحضور والانصراف الذكي</div>
+            </div>
+            <button class="language-switcher" onclick="toggleLanguage()">EN/AR</button>
+        </div>
+
+        <div class="main-container">
+            <div class="sidebar">
+                <div class="nav-item" onclick="showSection('attendance')">📊 الحضور والانصراف</div>
+                <div class="nav-item" onclick="showSection('employees')">👥 إدارة الموظفين</div>
+                <div class="nav-item" onclick="showSection('reports')">📈 التقارير</div>
+                <div class="nav-item" onclick="showSection('settings')">⚙️ الإعدادات</div>
+                <div class="nav-item" onclick="logout()">🚪 خروج</div>
+            </div>
+
+            <div class="content">
+                <!-- قسم الحضور والانصراف -->
+                <div id="attendance-section" class="section active">
+                    <h2>⏰ تسجيل الحضور والانصراف</h2>
+                    <div class="attendance-section">
+                        <input type="text" id="employeeId" class="login-input" placeholder="رقم الموظف">
+                        <input type="password" id="employeePin" class="login-input" placeholder="كود السري">
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="btn btn-success" onclick="checkIn()">✅ تسجيل دخول</button>
+                            <button class="btn btn-danger" onclick="checkOut()">🚪 تسجيل خروج</button>
+                        </div>
+                    </div>
+                    <div id="attendance-result" style="margin-top: 20px;"></div>
+                </div>
+
+                <!-- قسم الموظفين -->
+                <div id="employees-section" class="section">
+                    <h2>👥 إدارة الموظفين</h2>
+                    <button class="btn btn-primary" onclick="addEmployee()">➕ إضافة موظف</button>
+                    <div id="employees-list"></div>
+                </div>
+
+                <!-- قسم التقارير -->
+                <div id="reports-section" class="section">
+                    <h2>📈 تقارير الحضور</h2>
+                    <button class="btn btn-warning" onclick="generateReport()">🔄 توليد تقرير</button>
+                    <div id="reports-list"></div>
+                </div>
+
+                <!-- قسم الإعدادات -->
+                <div id="settings-section" class="section">
+                    <h2>⚙️ إعدادات النظام</h2>
+                    <div class="attendance-section">
+                        <h3>إعدادات الشركة</h3>
+                        <input type="text" id="companyName" class="login-input" value="الشركة الأمريكية لخدمات النظافة والبيئة">
+                        <input type="text" id="companySlogan" class="login-input" value="نظام الحضور والانصراف الذكي">
+                        
+                        <h3 style="margin-top: 20px;">إعدادات المدير</h3>
+                        <input type="text" id="adminUser" class="login-input" value="admin" placeholder="اسم المستخدم">
+                        <input type="password" id="adminPass" class="login-input" placeholder="كلمة المرور الجديدة">
+                        
+                        <button class="btn btn-primary" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات النظام
+        let employees = JSON.parse(localStorage.getItem('employees')) || [
+            { id: '101', name: 'أحمد محمد', pin: '1234', department: 'النظافة', position: 'منظف' },
+            { id: '102', name: 'فاطمة علي', pin: '5678', department: 'البيئة', position: 'فني بيئة' },
+            { id: '103', name: 'محمد إبراهيم', pin: '9999', department: 'الإشراف', position: 'مشرف' }
+        ];
+
+        let attendanceRecords = JSON.parse(localStorage.getItem('attendanceRecords')) || [];
+        let currentLanguage = 'ar';
+        let currentUser = null;
+
+        // نظام اللغات
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const translations = {
+                'attendance': { ar: '📊 الحضور والانصراف', en: '📊 Attendance' },
+                'employees': { ar: '👥 إدارة الموظفين', en: '👥 Employees Management' },
+                'reports': { ar: '📈 التقارير', en: '📈 Reports' },
+                'settings': { ar: '⚙️ الإعدادات', en: '⚙️ Settings' },
+                'logout': { ar: '🚪 خروج', en: '🚪 Logout' }
+            };
+            
+            document.querySelectorAll('.nav-item').forEach((item, index) => {
+                const keys = Object.keys(translations);
+                if (index < keys.length) {
+                    item.textContent = translations[keys[index]][currentLanguage];
+                }
+            });
+
+            // تحديث النصوص الأخرى
+            if (currentLanguage === 'en') {
+                document.querySelector('.company-name').textContent = 'American Cleaning & Environment Services';
+                document.querySelector('.system-title').textContent = 'Smart Attendance System';
+            } else {
+                document.querySelector('.company-name').textContent = 'الشركة الأمريكية لخدمات النظافة والبيئة';
+                document.querySelector('.system-title').textContent = 'نظام الحضور والانصراف الذكي';
+            }
+        }
+
+        // نظام الدخول
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === 'admin123') {
+                currentUser = { role: 'admin', name: 'المدير' };
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('mainApp').classList.add('active');
+                loadEmployeesList();
+                loadReports();
+            } else {
+                alert('بيانات الدخول غير صحيحة!');
+            }
+        }
+
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                currentUser = null;
+                document.getElementById('mainApp').classList.remove('active');
+                document.getElementById('loginSection').classList.add('active');
+            }
+        }
+
+        // إدارة الأقسام
+        function showSection(sectionName) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName + '-section').classList.add('active');
+        }
+
+        // نظام الحضور
+        function checkIn() {
+            const employeeId = document.getElementById('employeeId').value;
+            const pin = document.getElementById('employeePin').value;
+            
+            const employee = employees.find(emp => emp.id === employeeId && emp.pin === pin);
+            
+            if (employee) {
+                const today = new Date().toLocaleDateString('ar-EG');
+                const now = new Date().toLocaleTimeString('ar-EG');
+                
+                // التحقق من عدم التسجيل المسبق
+                const existingRecord = attendanceRecords.find(record => 
+                    record.employeeId === employeeId && record.date === today && !record.checkOut
+                );
+                
+                if (existingRecord) {
+                    showResult('⚠️ تم تسجيل دخولك مسبقاً اليوم!', 'error');
+                    return;
+                }
+                
+                const record = {
+                    employeeId: employee.id,
+                    employeeName: employee.name,
+                    department: employee.department,
+                    date: today,
+                    checkIn: now,
+                    checkOut: null
+                };
+                
+                attendanceRecords.push(record);
+                saveData();
+                showResult(`✅ تم تسجيل الدخول بنجاح<br><strong>${employee.name}</strong><br>القسم: ${employee.department}<br>الوقت: ${now}`, 'success');
+            } else {
+                showResult('❌ رقم الموظف أو الكود السري غير صحيح!', 'error');
+            }
+            
+            clearInputs();
+        }
+
+        function checkOut() {
+            const employeeId = document.getElementById('employeeId').value;
+            const pin = document.getElementById('employeePin').value;
+            
+            const employee = employees.find(emp => emp.id === employeeId && emp.pin === pin);
+            
+            if (employee) {
+                const today = new Date().toLocaleDateString('ar-EG');
+                const now = new Date().toLocaleTimeString('ar-EG');
+                
+                const recordIndex = attendanceRecords.findIndex(record => 
+                    record.employeeId === employeeId && record.date === today && record.checkOut === null
+                );
+                
+                if (recordIndex !== -1) {
+                    attendanceRecords[recordIndex].checkOut = now;
+                    saveData();
+                    showResult(`✅ تم تسجيل الخروج بنجاح<br><strong>${employee.name}</strong><br>الوقت: ${now}`, 'success');
+                } else {
+                    showResult('❌ لم يتم تسجيل دخولك اليوم!', 'error');
+                }
+            } else {
+                showResult('❌ رقم الموظف أو الكود السري غير صحيح!', 'error');
+            }
+            
+            clearInputs();
+        }
+
+        // إدارة الموظفين
+        function loadEmployeesList() {
+            const listDiv = document.getElementById('employees-list');
+            let html = '<table>';
+            html += '<tr><th>الرقم</th><th>الاسم</th><th>القسم</th><th>المنصب</th><th>الكود</th><th>الإجراءات</th></tr>';
+            
+            employees.forEach(employee => {
+                html += `
+                    <tr>
+                        <td>${employee.id}</td>
+                        <td>${employee.name}</td>
+                        <td>${employee.department}</td>
+                        <td>${employee.position}</td>
+                        <td>${employee.pin}</td>
+                        <td>
+                            <button class="btn btn-warning" onclick="editEmployee('${employee.id}')">✏️ تعديل</button>
+                            <button class="btn btn-danger" onclick="deleteEmployee('${employee.id}')">🗑️ حذف</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</table>';
+            listDiv.innerHTML = html;
+        }
+
+        function addEmployee() {
+            const name = prompt('اسم الموظف:');
+            if (!name) return;
+            
+            const department = prompt('القسم:');
+            if (!department) return;
+            
+            const position = prompt('المنصب:');
+            if (!position) return;
+            
+            const pin = prompt('الكود السري (4 أرقام):');
+            if (!pin) return;
+            
+            const newId = (employees.length > 0 ? 
+                Math.max(...employees.map(emp => parseInt(emp.id))) + 1 : 101).toString();
+            
+            employees.push({
+                id: newId,
+                name: name,
+                department: department,
+                position: position,
+                pin: pin
+            });
+            
+            saveData();
+            loadEmployeesList();
+            alert(`✅ تم إضافة الموظف ${name} برقم ${newId}`);
+        }
+
+        function deleteEmployee(employeeId) {
+            if (confirm('هل تريد حذف هذا الموظف؟')) {
+                employees = employees.filter(emp => emp.id !== employeeId);
+                saveData();
+                loadEmployeesList();
+            }
+        }
+
+        // التقارير
+        function loadReports() {
+            const reportsDiv = document.getElementById('reports-list');
+            let html = '<table>';
+            html += '<tr><th>الموظف</th><th>القسم</th><th>التاريخ</th><th>الدخول</th><th>الخروج</th><th>الحالة</th></tr>';
+            
+            const recentRecords = attendanceRecords.slice(-20).reverse();
+            
+            if (recentRecords.length === 0) {
+                html += '<tr><td colspan="6">لا توجد سجلات حضور</td></tr>';
+            } else {
+                recentRecords.forEach(record => {
+                    const status = record.checkOut ? '🟢 مكتمل' : '🟡 لم يسجل خروج';
+                    html += `
+                        <tr>
+                            <td>${record.employeeName}</td>
+                            <td>${record.department}</td>
+                            <td>${record.date}</td>
+                            <td>${record.checkIn}</td>
+                            <td>${record.checkOut || '---'}</td>
+                            <td>${status}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            html += '</table>';
+            reportsDiv.innerHTML = html;
+        }
+
+        function generateReport() {
+            loadReports();
+            alert('✅ تم تحديث التقرير');
+        }
+
+        // الإعدادات
+        function saveSettings() {
+            const companyName = document.getElementById('companyName').value;
+            const companySlogan = document.getElementById('companySlogan').value;
+            const newPassword = document.getElementById('adminPass').value;
+            
+            localStorage.setItem('companyName', companyName);
+            localStorage.setItem('companySlogan', companySlogan);
+            
+            if (newPassword) {
+                // في نظام حقيقي، هنا يتم تشفير كلمة المرور
+                alert('⚠️ في الإصدار النهائي، سيتم تشفير كلمة المرور');
+            }
+            
+            alert('✅ تم حفظ الإعدادات بنجاح');
+        }
+
+        // وظائف مساعدة
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('attendance-result');
+            resultDiv.innerHTML = message;
+            resultDiv.style.cssText = `
+                padding: 15px; 
+                margin: 10px 0; 
+                border-radius: 5px; 
+                text-align: center;
+                background: ${type === 'success' ? '#d4edda' : '#f8d7da'};
+                color: ${type === 'success' ? '#155724' : '#721c24'};
+                border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};
+            `;
+        }
+
+        function clearInputs() {
+            document.getElementById('employeeId').value = '';
+            document.getElementById('employeePin').value = '';
+        }
+
+        function saveData() {
+            localStorage.setItem('employees', JSON.stringify(employees));
+            localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
+        }
+
+        // منع الخروج
+        window.onbeforeunload = function(e) {
+            if (currentUser) {
+                e.preventDefault();
+                e.returnValue = 'هل تريد حقاً الخروج من النظام؟';
+                return 'هل تريد حقاً الخروج من النظام؟';
+            }
+        };
+
+        // تهيئة النظام
+        window.onload = function() {
+            const savedCompanyName = localStorage.getItem('companyName');
+            const savedSlogan = localStorage.getItem('companySlogan');
+            
+            if (savedCompanyName) {
+                document.getElementById('companyName').value = savedCompanyName;
+            }
+            if (savedSlogan) {
+                document.getElementById('companySlogan').value = savedSlogan;
+            }
+        }
+    </script>
+</body>
+</html>
