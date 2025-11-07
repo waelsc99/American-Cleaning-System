@@ -1,0 +1,87 @@
+{
+  "name": "american-cleaning-system",
+  "version": "2.0.0",
+  "description": "نظام الحضور والانصراف الذكي - الشركة الأمريكية لخدمات النظافة والبيئة",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "build-win-portable": "electron-builder --win portable",
+    "dist": "npm run build-win",
+    "dev": "set NODE_ENV=development && electron ."
+  },
+  "keywords": [
+    "attendance",
+    "system",
+    "cleaning",
+    "company",
+    "نظام حضور",
+    "شركة نظافة",
+    "american cleaning"
+  ],
+  "author": {
+    "name": "الشركة الأمريكية لخدمات النظافة والبيئة",
+    "email": "info@americancleaning.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^22.3.1",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.americancleaning.attendance.system",
+    "productName": "American Cleaning System",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "**/*",
+      "!node_modules",
+      "!dist",
+      "!*.md",
+      "!.gitignore"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "icon.ico",
+      "publisherName": "American Cleaning Company"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "نظام الحضور الأمريكي",
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "installerHeaderIcon": "icon.ico",
+      "include": "build/installer.nsh"
+    },
+    "portable": {
+      "artifactName": "American_Cleaning_System_Portable.exe"
+    },
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets",
+        "filter": ["**/*"]
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weslec99/American-Cleaning-System"
+  },
+  "homepage": "https://github.com/weslec99/American-Cleaning-System"
+}
