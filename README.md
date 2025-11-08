@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="Icon_2.ico" alt="American Cleaning System Logo" width="120">
+</p>
 # 🧹 American Cleaning System
 
 ### الشركة الأمريكية لخدمات النظافة والبيئة  
