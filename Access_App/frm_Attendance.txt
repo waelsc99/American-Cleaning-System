@@ -1,0 +1,42 @@
+' ==========================================
+' نموذج الحضور والانصراف - frm_Attendance
+' مبرمج النظام: وائل سيد حسن
+' ==========================================
+
+Option Compare Database
+Option Explicit
+
+Private Sub Form_Load()
+    Me.RecordSource = "SELECT * FROM Attendance ORDER BY AttDate DESC;"
+End Sub
+
+Private Sub btnCheckIn_Click()
+    Dim empID As Long
+    empID = Nz(Me.cboEmployee, 0)
+    
+    If empID = 0 Then
+        MsgBox "من فضلك اختر الموظف أولاً", vbExclamation, "تنبيه"
+        Exit Sub
+    End If
+    
+    CurrentDb.Execute "INSERT INTO Attendance (EmpID, AttDate, CheckIn) VALUES (" & empID & ", Date(), Time());"
+    MsgBox "تم تسجيل الحضور بنجاح", vbInformation, "حضور"
+    Me.Requery
+End Sub
+
+Private Sub btnCheckOut_Click()
+    Dim empID As Long
+    empID = Nz(Me.cboEmployee, 0)
+    If empID = 0 Then
+        MsgBox "اختر الموظف أولاً", vbExclamation, "تنبيه"
+        Exit Sub
+    End If
+
+    CurrentDb.Execute "UPDATE Attendance SET CheckOut = Time() WHERE EmpID = " & empID & " AND AttDate = Date();"
+    MsgBox "تم تسجيل الانصراف بنجاح", vbInformation, "انصراف"
+    Me.Requery
+End Sub
+
+Private Sub btnShowToday_Click()
+    Me.RecordSource = "SELECT * FROM Attendance WHERE AttDate = Date();"
+End Sub
