@@ -1,0 +1,47 @@
+' ==========================================
+' نموذج السلف والساعات الإضافية - frm_Finance
+' مبرمج النظام: وائل سيد حسن
+' ==========================================
+
+Option Compare Database
+Option Explicit
+
+Private Sub Form_Load()
+    Me.RecordSource = "SELECT * FROM Finance ORDER BY FinDate DESC;"
+End Sub
+
+Private Sub btnAddAdvance_Click()
+    Dim empID As Long
+    Dim amount As Currency
+    empID = Nz(Me.cboEmployee, 0)
+    amount = Nz(Me.txtAdvance, 0)
+    
+    If empID = 0 Or amount <= 0 Then
+        MsgBox "برجاء إدخال اسم الموظف وقيمة السلفة", vbExclamation, "تنبيه"
+        Exit Sub
+    End If
+
+    CurrentDb.Execute "INSERT INTO Finance (EmpID, FinDate, Advance, Overtime) VALUES (" & empID & ", Date(), " & amount & ", 0);"
+    MsgBox "تم تسجيل السلفة بنجاح", vbInformation, "تم الحفظ"
+    Me.Requery
+End Sub
+
+Private Sub btnAddOvertime_Click()
+    Dim empID As Long
+    Dim hours As Double
+    empID = Nz(Me.cboEmployee, 0)
+    hours = Nz(Me.txtOvertime, 0)
+    
+    If empID = 0 Or hours <= 0 Then
+        MsgBox "برجاء إدخال اسم الموظف وعدد الساعات", vbExclamation, "تنبيه"
+        Exit Sub
+    End If
+
+    CurrentDb.Execute "INSERT INTO Finance (EmpID, FinDate, Advance, Overtime) VALUES (" & empID & ", Date(), 0, " & hours & ");"
+    MsgBox "تم تسجيل الساعات الإضافية بنجاح", vbInformation, "تم الحفظ"
+    Me.Requery
+End Sub
+
+Private Sub btnShowReport_Click()
+    DoCmd.OpenReport "rpt_Finance", acViewPreview
+End Sub
