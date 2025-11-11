@@ -1,0 +1,51 @@
+' ==========================================
+' نموذج الموظفين - frm_Employees
+' مبرمج النظام: وائل سيد حسن
+' ==========================================
+
+Option Compare Database
+Option Explicit
+
+Private Sub Form_Load()
+    ' تحميل البيانات عند فتح النموذج
+    Me.RecordSource = "SELECT * FROM Employees ORDER BY EmpID;"
+End Sub
+
+Private Sub btnAdd_Click()
+    On Error GoTo Err_Handler
+    DoCmd.GoToRecord , , acNewRec
+    MsgBox "جاهز لإضافة موظف جديد", vbInformation, "إضافة موظف"
+Exit_Handler:
+    Exit Sub
+Err_Handler:
+    MsgBox Err.Description
+    Resume Exit_Handler
+End Sub
+
+Private Sub btnSave_Click()
+    On Error GoTo Err_Handler
+    DoCmd.RunCommand acCmdSaveRecord
+    MsgBox "تم حفظ بيانات الموظف بنجاح", vbInformation, "حفظ"
+Exit_Handler:
+    Exit Sub
+Err_Handler:
+    MsgBox "خطأ أثناء الحفظ: " & Err.Description
+    Resume Exit_Handler
+End Sub
+
+Private Sub btnDelete_Click()
+    If MsgBox("هل أنت متأكد من حذف هذا الموظف؟", vbYesNo + vbQuestion, "تأكيد الحذف") = vbYes Then
+        DoCmd.RunCommand acCmdDeleteRecord
+        MsgBox "تم حذف الموظف بنجاح", vbInformation, "تم الحذف"
+    End If
+End Sub
+
+Private Sub btnSearch_Click()
+    Dim strSearch As String
+    strSearch = InputBox("ادخل اسم الموظف للبحث:", "بحث عن موظف")
+    If strSearch <> "" Then
+        Me.RecordSource = "SELECT * FROM Employees WHERE EmpName LIKE '*" & strSearch & "*';"
+    Else
+        Me.RecordSource = "SELECT * FROM Employees ORDER BY EmpID;"
+    End If
+End Sub
