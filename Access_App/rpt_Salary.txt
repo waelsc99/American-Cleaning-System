@@ -1,0 +1,30 @@
+' ==========================================
+' تقرير الرواتب الشهرية - rpt_Salary
+' مبرمج النظام: وائل سيد حسن
+' ==========================================
+
+Option Compare Database
+Option Explicit
+
+' هذا التقرير يعتمد على جدول Finance و Attendance و Employees
+
+Private Sub Report_Open(Cancel As Integer)
+    Me.RecordSource = _
+        "SELECT E.EmpName, SUM(F.Advance) AS TotalAdvance, " & _
+        "SUM(F.Overtime) AS TotalOvertime, " & _
+        "Count(A.AttDate) AS DaysWorked " & _
+        "FROM (Employees AS E LEFT JOIN Attendance AS A ON E.EmpID = A.EmpID) " & _
+        "LEFT JOIN Finance AS F ON E.EmpID = F.EmpID " & _
+        "GROUP BY E.EmpName;"
+        
+    ' إضافة الشعار الشفاف في الخلفية
+    Me.Picture = CurrentProject.Path & "\Icon_2.ico"
+    Me.PictureTiling = False
+    Me.PictureAlignment = 2 ' Center
+    Me.PictureSizeMode = 1 ' Stretch
+    Me.PictureType = 2 ' Embedded
+End Sub
+
+Private Sub Detail_Format(Cancel As Integer, FormatCount As Integer)
+    Me.Line (0, 0)-(Me.Width, 0)
+End Sub
